@@ -160,6 +160,7 @@ $(document).ready(function(){
 				$('#quizcontainer_'+dir).text('All questions completed. Quiz is over...');
 			} else if(question_display_const > parseInt(NUMBER_OF_QUESTION) && question_display_const_2 > parseInt(NUMBER_OF_QUESTION)){
 				$('.split').hide();
+				$('.filters').hide();
 				$('#final_block').show();
 			} else {
 				$('#quizcontainer_'+dir).find('h3').text('Question '+question_display_const+' of '+parseInt(NUMBER_OF_QUESTION)+':');
@@ -171,20 +172,25 @@ $(document).ready(function(){
 	});
 	$('.showResult').on('click',function(e){
 		e.preventDefault();
-		var html = '<div style="background-color:#dddddd;">Final Score : '+(SCORE_LEFT + SCORE_RIGHT)+'</div></br><ul>'
+		var i = 1;
+		var html = '<div style="background-color:#dddddd;text-align:center;"><b>Final Score : '+(SCORE_LEFT + SCORE_RIGHT)+'</b></div></br><ul class="menu-list"><li style="float:left;width:600px;" class="menu-list-item"><a href="#">Quiz 1</a><ul>';
 		questions_left.forEach(function (arrayItem) {
 			if(arrayItem.status=='W'){
-				html += '<li style="color:red;"><div><span>Question : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>your Answer : '+arrayItem.attempted+'</span></div></li>'
+				html += '<li style="color:red;background-color:#eee;"><div><span>Question '+ i +' : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>your Answer : '+arrayItem.attempted+'</span></div></li><li style="background-color:white;">&nbsp;</li>'
 			} else {
-				html += '<li style="color:green;"><div><span>Question : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>Your Answer : '+arrayItem.attempted+'</span></div></li>'
+				html += '<li style="color:green;background-color:#eee;"><div><span>Question '+ i + ' : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>Your Answer : '+arrayItem.attempted+'</span></div></li><li style="background-color:white;">&nbsp;</li>'
 			}
+			i++;
 		});
+		html += '</ul></li><li style="float:right;width:600px;" class="menu-list-item"><a href="#">Quiz 2</a><ul>';
+		i=1;
 		questions_right.forEach(function (arrayItem) {
 			if(arrayItem.status=='W'){
-				html += '<li style="color:red;"><div><span>Question : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>your Answer : '+arrayItem.attempted+'</span></div></li>'
+				html += '<li style="color:red;background-color:#eee;"><div><span>Question '+ i +' : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>your Answer : '+arrayItem.attempted+'</span></div></li><li style="background-color:white;">&nbsp;</li>'
 			} else {
-				html += '<li style="color:green;"><div><span>Question : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>Your Answer : '+arrayItem.attempted+'</span></div></li>'
+				html += '<li style="color:green;background-color:#eee;"><div><span>Question '+ i + ' : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>Your Answer : '+arrayItem.attempted+'</span></div></li><li style="background-color:white;">&nbsp;</li>'
 			}
+			i++;
 		});
 		html += '</ul>';
 		$('#score-board').html(html).show();
@@ -197,8 +203,8 @@ function generateQuestion(side){
 	var operand2 = getRandomInt(1,RAND_NUMBER);
 	var selectedOperator = Math.floor(Math.random()*operators.length);
 
-	var operator = operators[selectedOperator].sign                  //this will give you the sign
-	var result = operators[selectedOperator].method(operand1, operand2)  //this will give you the answer
+	var operator = operators[selectedOperator].sign;                  //this will give you the sign
+	var result = Math.floor(operators[selectedOperator].method(operand1, operand2));  //this will give you the answer
 	if(side=='left'){
 		var c = QUESTION_DISPLAYED_LEFT;
 	} else {

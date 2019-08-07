@@ -58,7 +58,42 @@ div#score-board ul{
 
 /* add style only to the 'li' elements inside the id="one" div. this means 'li' inside the 'ul' inside the 'div' which its id="one" */
 div#score-board ul li{
-	display: inline;
+	display: block;
 	margin: 20px;
 
+}
+.menu-list {
+	display: block;
+	padding: 0px;
+	list-style-type: none;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.menu-list-item {
+	display: block;
+	min-width: 90px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 11px;
+	letter-spacing: 2px;
+	text-align: center;
+	line-height: 50px;
+	color: #000;
+}
+
+.menu-list-item a {
+	display: block;
+	cursor: pointer;
+}
+
+.menu-list-item:hover a {
+	text-decoration: none;
+	color: rgba(153, 153, 153, 1);
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+}
+
+@media(min-width: 480px) {
+	.menu-list-item { display: inline-block; }
+	.menu-list-item a { min-width: 90px; }
 }
