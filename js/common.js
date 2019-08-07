@@ -43,9 +43,8 @@ $(document).ready(function(){
         {
             $("#" + errorField).focus();
             return false;
-        } else {
-			RAND_NUMBER = $('#rand_no').val();
-		}
+        } 
+		RAND_NUMBER = $('#rand_no').val();
 	});
 
 	$('#edit_no_of_ques').on('click',function(e){
@@ -68,9 +67,8 @@ $(document).ready(function(){
         {
             $("#" + errorField).focus();
             return false;
-        } else {
-			NUMBER_OF_QUESTION = $('#no_of_ques').val();
-		}
+        }
+		NUMBER_OF_QUESTION = $('#no_of_ques').val();
 	});
 	$('.submit_btn').on('click',function(e){
 		e.preventDefault();
@@ -84,145 +82,25 @@ $(document).ready(function(){
 		}
 		$('#is_'+dir).hide();
 		$('#quizcontainer_'+dir).find('h3').text('Question '+question_display_const+' of '+parseInt(NUMBER_OF_QUESTION)+':');
-		var q = generateQuestion(dir);
-		$('#quizcontainer_'+dir).find('p.qtext').text(q.question);
-		$('#quizcontainer_'+dir).find('.answerbutton').attr('cust-attr','nxt-'+q.q_no);
+		var quest = generateQuestion();
+		if(dir=='left'){
+			quest.q_no = QUESTION_DISPLAYED_LEFT;
+			questions_left.push(quest);
+		} else {
+			quest.q_no = QUESTION_DISPLAYED_RIGHT;
+			questions_right.push(quest);
+		}
+		$('#quizcontainer_'+dir).find('p.qtext').text(quest.question);
+		$('#quizcontainer_'+dir).find('.answerbutton').attr('cust-attr','nxt-'+quest.q_no);
 		$('#quizcontainer_'+dir).show();
+		
 	});
 	$('.answerbutton').on('click',function(e){
 		e.preventDefault();
-		var errorField = "";
-        var isError = "0";
-		var question_display_const;
-		var question_display_const_2;
-		var dir = $(this).attr('dir');
-		if(dir=='left'){
-			question_display_const = QUESTION_DISPLAYED_LEFT;
-			var ele = $(this).parent().find('.score_left');
-		} else{
-			question_display_const = QUESTION_DISPLAYED_RIGHT;
-			var ele = $(this).parent().find('.score_right');
-		}
-		if($('#errorClass_'+dir+'_'+question_display_const).length>0)
-			$('#errorClass_'+dir+'_'+question_display_const).remove();
-		$(this).parent().find('div.answerbuttoncontainer').find('.ans').attr('id','ans-'+dir+'_'+question_display_const);
-		var attempted = Math.floor(parseInt($(this).parent().find('div.answerbuttoncontainer').find('.ans').val()));
-		if($(this).parent().find('.answerbuttoncontainer').find('.ans').val()==''){
-			$('#ans-'+dir+'_'+question_display_const).next(".errorClass").html("");
-			$('#ans-'+dir+'_'+question_display_const).after('<p class="errorClass" id="errorClass_'+dir+'_'+question_display_const+'">Please enter the answer.</p>');
-			isError = 1;
-			errorField = (errorField == '') ? 'ans-'+dir+'_'+question_display_const : errorField;
-		}
-		if (isError == 1)
-        {
-            $("#" + errorField).focus();
-            return false;
-        } else {
-			$(this).parent().find('.answerbuttoncontainer').find('.ans').val('');
-			if(dir == 'left'){
-				questions_left.forEach(function (arrayItemLeft) {
-					if(arrayItemLeft.q_no==question_display_const){
-						if(attempted == Math.floor(parseInt(arrayItemLeft.answer))){
-							SCORE_LEFT++;
-							$(ele).text('SCORE : '+SCORE_LEFT);
-							arrayItemLeft.status = 'C';
-							arrayItemLeft.attempted = attempted
-						}else{
-							$(ele).text('SCORE : '+SCORE_LEFT);
-							arrayItemLeft.status = 'W';
-							arrayItemLeft.attempted = attempted
-						}
-					}
-				});
-				QUESTION_DISPLAYED_LEFT++;
-				question_display_const = QUESTION_DISPLAYED_LEFT;
-				question_display_const_2  = QUESTION_DISPLAYED_RIGHT;
-			} else {
-				questions_right.forEach(function (arrayItem) {
-					if(arrayItem.q_no==question_display_const){
-						if(attempted == Math.floor(parseInt(arrayItem.answer))){
-							SCORE_RIGHT++;
-							$(ele).text('SCORE : '+SCORE_RIGHT);
-							arrayItem.status = 'C';
-							arrayItem.attempted = attempted;
-						}else{
-							$(ele).text('SCORE : '+SCORE_RIGHT);
-							arrayItem.status = 'W';
-							arrayItem.attempted = attempted;
-						}
-					}
-				});
-				QUESTION_DISPLAYED_RIGHT++;
-				question_display_const = QUESTION_DISPLAYED_RIGHT;
-				question_display_const_2 = QUESTION_DISPLAYED_LEFT;
-			}
-			if( question_display_const > parseInt(NUMBER_OF_QUESTION) && question_display_const_2 <= parseInt(NUMBER_OF_QUESTION)){
-				$('#quizcontainer_'+dir).text('All questions completed. Quiz is over...');
-			} else if(question_display_const > parseInt(NUMBER_OF_QUESTION) && question_display_const_2 > parseInt(NUMBER_OF_QUESTION)){
-				$('.split').hide();
-				$('.filters').hide();
-				$('#final_block').show();
-			} else {
-				$('#quizcontainer_'+dir).find('h3').text('Question '+question_display_const+' of '+parseInt(NUMBER_OF_QUESTION)+':');
-				var q = generateQuestion(dir);
-				$('#quizcontainer_'+dir).find('p.qtext').text(q.question);
-				$('#quizcontainer_'+dir).find('.answerbutton').attr('cust-attr','nxt-'+q.q_no);
-			}
-		}
+		handleNextButton($(this));
 	});
 	$('.showResult').on('click',function(e){
 		e.preventDefault();
-		var i = 1;
-		var html = '<div style="background-color:#dddddd;text-align:center;"><b>Final Score : '+(SCORE_LEFT + SCORE_RIGHT)+'</b></div></br><ul class="menu-list"><li style="float:left;width:600px;" class="menu-list-item"><a href="#">Quiz 1</a><ul>';
-		questions_left.forEach(function (arrayItem) {
-			if(arrayItem.status=='W'){
-				html += '<li style="color:red;background-color:#eee;"><div><span>Question '+ i +' : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>your Answer : '+arrayItem.attempted+'</span></div></li><li style="background-color:white;">&nbsp;</li>'
-			} else {
-				html += '<li style="color:green;background-color:#eee;"><div><span>Question '+ i + ' : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>Your Answer : '+arrayItem.attempted+'</span></div></li><li style="background-color:white;">&nbsp;</li>'
-			}
-			i++;
-		});
-		html += '</ul></li><li style="float:right;width:600px;" class="menu-list-item"><a href="#">Quiz 2</a><ul>';
-		i=1;
-		questions_right.forEach(function (arrayItem) {
-			if(arrayItem.status=='W'){
-				html += '<li style="color:red;background-color:#eee;"><div><span>Question '+ i +' : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>your Answer : '+arrayItem.attempted+'</span></div></li><li style="background-color:white;">&nbsp;</li>'
-			} else {
-				html += '<li style="color:green;background-color:#eee;"><div><span>Question '+ i + ' : '+arrayItem.question+'</span></div><div><span>Expected Answer : '+arrayItem.answer+'</span></div><div><span>Your Answer : '+arrayItem.attempted+'</span></div></li><li style="background-color:white;">&nbsp;</li>'
-			}
-			i++;
-		});
-		html += '</ul>';
-		$('#score-board').html(html).show();
-		$('.filters').hide();
-		$('#final_block').hide();
+		showFinalReport($(this));
 	});
 });
-function generateQuestion(side){
-	var operand1 = getRandomInt(1,RAND_NUMBER);
-	var operand2 = getRandomInt(1,RAND_NUMBER);
-	var selectedOperator = Math.floor(Math.random()*operators.length);
-
-	var operator = operators[selectedOperator].sign;                  //this will give you the sign
-	var result = Math.floor(operators[selectedOperator].method(operand1, operand2));  //this will give you the answer
-	if(side=='left'){
-		var c = QUESTION_DISPLAYED_LEFT;
-	} else {
-		var c = QUESTION_DISPLAYED_RIGHT;
-	}
-	var questionObj = {
-		'question':operand1 +' '+ operator + ' ' + operand2,
-		'answer':result,
-		'q_no': c
-	};
-	if(side == 'left')
-		questions_left.push(questionObj);
-	else
-		questions_right.push(questionObj);
-	return questionObj;
-}
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
