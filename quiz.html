@@ -15,12 +15,12 @@
 					<div class="col-md-3">
 						<label for="rand_no">Edit Upper Limit Of Number<sup class="red">&lowast;</sup></label>
 						<input type="text" class="form-control input" id="rand_no" required value="10" />
-						<a class="anch" href="javascript:void(0);" id="edit_rand_no" >Edit</a>
+						<button class="anch btn-success" id="edit_rand_no" type="submit" >Edit</button>
 					</div>
 					<div class="col-md-3">
 						<label for="no_of_ques">Edit Number Of questions to be generated<sup class="red">&lowast;</sup></label>                          
 						<input type="text" class="form-control input" id="no_of_ques" required value="20" />
-						<a class="anch" href="javascript:void(0);" id="edit_no_of_ques" >Edit</a>
+						<button class="anch btn-success" id="edit_no_of_ques" type="submit" >Edit</button>
 					</div>
 				</div>
 			</div>
@@ -43,7 +43,7 @@
 				</div>
 				<button class="answerbutton btn-success" type="submit" dir="left" cust-attr="">Next ❯</button>
 				<br/></br>
-				<div class="score_left"></div>
+				<div id="display_score"><span>SCORE : </span><span class="score_left"></span></div>
 			</div>
 		  </div>
 		</div>
@@ -66,7 +66,7 @@
 				</div>
 				<button class="answerbutton btn-success" type="submit" dir="right" cust-attr="">Next ❯</button>
 				<br/></br>
-				<div class="score_right"></div>
+				<div id="display_score"><span>SCORE : </span><span class="score_right"></span></div>
 			</div>
 		  </div>
 		</div>
@@ -81,8 +81,5 @@
 	<footer>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="js/common.js"></script>
-		<script src="js/generate-ques.js"></script>
-		<script src="js/next-btn.js"></script>
-		<script src="js/final-score.js"></script>
 	</footer>
 </html>
