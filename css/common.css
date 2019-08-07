@@ -1,0 +1,64 @@
+/* Split the screen in half */
+.split {
+  height: 90%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+  margin-top:100px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+  background-color: #D3D3D3;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  background-color:#A9A9A9;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+/* Style the image inside the centered container, if needed */
+.centered img {
+  width: 150px;
+  border-radius: 50%;
+}
+.red{
+	color:red;
+}
+.anch:visited { 
+  color: pink;
+}
+.anch:hover { 
+	cursor:pointer;
+	background-color: yellow;
+}
+.errorClass
+{
+	color:red;
+}
+/* add styles only to for 'ul' element, inside the id="one" div */
+div#score-board ul{
+	list-style-type: none;
+	color: orange;
+}
+
+
+/* add style only to the 'li' elements inside the id="one" div. this means 'li' inside the 'ul' inside the 'div' which its id="one" */
+div#score-board ul li{
+	display: inline;
+	margin: 20px;
+
+}
